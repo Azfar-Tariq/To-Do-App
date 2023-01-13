@@ -35,6 +35,13 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  // delete task
+  void deleteTask(int index) {
+    setState(() {
+      todoList.removeAt(index);
+    });
+  }
+
   // create a new task
   void createNewTask() {
     showDialog(
@@ -70,6 +77,7 @@ class _HomePageState extends State<HomePage> {
             taskName: todoList[index][0],
             taskCompleted: todoList[index][1],
             onChanged: (value) => checkBoxChanged(value, index),
+            deleteFunction: (context) => deleteTask(index),
           );
         },
       ),
