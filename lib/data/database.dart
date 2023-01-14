@@ -7,7 +7,7 @@ class ToDoDatabase {
 
   void createInitialData() {
     todoList = [
-      ["Welcome to ToDo App", true],
+      ["Welcome to ToDo App", false],
       ["Swipe to Delete Task", false],
     ];
   }

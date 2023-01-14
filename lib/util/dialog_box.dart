@@ -23,8 +23,10 @@ class DialogBox extends StatelessWidget {
           children: [
             // get user data
             TextField(
+              cursorColor: Colors.black,
+              textCapitalization: TextCapitalization.sentences,
               controller: controller,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 hintText: "Add a new task",
               ),
