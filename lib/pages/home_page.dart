@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:todo/data/database.dart';
 import 'package:todo/util/dialog_box.dart';
 import 'package:todo/util/todo_tile.dart';
 
@@ -13,33 +15,44 @@ class _HomePageState extends State<HomePage> {
   // text controller
   final _controller = TextEditingController();
 
-  // list of todo tasks
-  List todoList = [
-    ["Do Work", false],
-    ["Do More Work", false],
-  ];
+  final _myBox = Hive.box('mybox');
+
+  ToDoDatabase _database = ToDoDatabase();
+
+  @override
+  void initState() {
+    if (_myBox.get("TODOLIST") == null) {
+      _database.createInitialData();
+    } else {
+      _database.loadData();
+    }
+    super.initState();
+  }
 
   // checkbox was tapped
   void checkBoxChanged(bool? value, int index) {
     setState(() {
-      todoList[index][1] = !todoList[index][1];
+      _database.todoList[index][1] = !_database.todoList[index][1];
     });
+    _database.updateDatabase();
   }
 
   // save new task
   void saveNewTask() {
     setState(() {
-      todoList.add([_controller.text, false]);
+      _database.todoList.add([_controller.text, false]);
       Navigator.of(context).pop();
       _controller.clear();
     });
+    _database.updateDatabase();
   }
 
   // delete task
   void deleteTask(int index) {
     setState(() {
-      todoList.removeAt(index);
+      _database.todoList.removeAt(index);
     });
+    _database.updateDatabase();
   }
 
   // create a new task
@@ -71,11 +84,11 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       body: ListView.builder(
-        itemCount: todoList.length,
+        itemCount: _database.todoList.length,
         itemBuilder: (context, index) {
           return ToDoTile(
-            taskName: todoList[index][0],
-            taskCompleted: todoList[index][1],
+            taskName: _database.todoList[index][0],
+            taskCompleted: _database.todoList[index][1],
             onChanged: (value) => checkBoxChanged(value, index),
             deleteFunction: (context) => deleteTask(index),
           );
