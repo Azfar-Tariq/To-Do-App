@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:todo/util/my_button.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class DialogBox extends StatelessWidget {
   final controller;
   VoidCallback onSave;
   VoidCallback onCancel;
+  // form key
+  final _formkey = GlobalKey<FormState>();
   DialogBox({
     super.key,
     required this.controller,
@@ -17,18 +20,29 @@ class DialogBox extends StatelessWidget {
     return AlertDialog(
       backgroundColor: Colors.yellow[300],
       content: Container(
-        height: 120,
+        height: 140,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             // get user data
-            TextField(
+            TextFormField(
+              // validator: (value) {
+              //   if (value!.isEmpty) {
+              //     return "Please enter a task";
+              //   }
+              //   return null;
+              // },
+              maxLength: 25,
               cursorColor: Colors.black,
               textCapitalization: TextCapitalization.sentences,
               controller: controller,
               decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: "Add a new task",
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Colors.black,
+                  ),
+                ),
+                hintText: "Add a new task (max. 25 characters)",
               ),
             ),
 
@@ -37,12 +51,18 @@ class DialogBox extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 // save button
-                MyButton(text: "Save", onPressed: onSave),
+                MyButton(
+                  text: "Save",
+                  onPressed: onSave,
+                ),
                 const SizedBox(
                   width: 10,
                 ),
                 // cancel button
-                MyButton(text: "Cancel", onPressed: onCancel),
+                MyButton(
+                  text: "Cancel",
+                  onPressed: onCancel,
+                ),
               ],
             ),
           ],
