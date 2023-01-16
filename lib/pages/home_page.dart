@@ -17,7 +17,7 @@ class _HomePageState extends State<HomePage> {
 
   final _myBox = Hive.box('mybox');
 
-  final ToDoDatabase _database = ToDoDatabase();
+  ToDoDatabase _database = ToDoDatabase();
 
   @override
   void initState() {
@@ -68,18 +68,6 @@ class _HomePageState extends State<HomePage> {
         });
   }
 
-  // reordering tiles
-  void updateTiles(int oldIndex, int newIndex) {
-    String tempIndex = "";
-    tempIndex = _database.todoList[oldIndex][0];
-    if (oldIndex < newIndex) {
-      newIndex--;
-    }
-    _database.todoList.removeAt(oldIndex);
-    //_database.todoList.insert(newIndex, tempIndex);
-    _database.todoList.insert(newIndex, [tempIndex, false]);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -95,18 +83,16 @@ class _HomePageState extends State<HomePage> {
           Icons.add,
         ),
       ),
-      body: ReorderableListView.builder(
+      body: ListView.builder(
         itemCount: _database.todoList.length,
         itemBuilder: (context, index) {
           return ToDoTile(
-            key: UniqueKey(),
             taskName: _database.todoList[index][0],
             taskCompleted: _database.todoList[index][1],
             onChanged: (value) => checkBoxChanged(value, index),
             deleteFunction: (context) => deleteTask(index),
           );
         },
-        onReorder: (oldIndex, newIndex) => updateTiles(oldIndex, newIndex),
       ),
     );
   }

@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:todo/util/my_button.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class DialogBox extends StatelessWidget {
   final controller;
   VoidCallback onSave;
   VoidCallback onCancel;
-  // form key
-  final _formkey = GlobalKey<FormState>();
   DialogBox({
     super.key,
     required this.controller,
@@ -24,14 +21,7 @@ class DialogBox extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            // get user data
             TextFormField(
-              // validator: (value) {
-              //   if (value!.isEmpty) {
-              //     return "Please enter a task";
-              //   }
-              //   return null;
-              // },
               maxLength: 25,
               cursorColor: Colors.black,
               textCapitalization: TextCapitalization.sentences,
@@ -42,7 +32,7 @@ class DialogBox extends StatelessWidget {
                     color: Colors.black,
                   ),
                 ),
-                hintText: "Add a new task (max. 25 characters)",
+                hintText: "Add a new task",
               ),
             ),
 
